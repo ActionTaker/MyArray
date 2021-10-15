@@ -7,6 +7,7 @@ class MyArray{
     void* next;
   };
   Address* top;
+public:
   MyArray(int dim, int* size):dim(dim)
   {
     for(int i = 0; i < dim; i++)
@@ -29,4 +30,26 @@ class MyArray{
       InitializeAddress(static_cast<Address*>(curr->next) + i);
     }
   }
+  void FreeAddress(Address* curr)
+  {
+    if(curr->level == dim - 1)
+    {
+      delete[] static_cast<int*>(curr->next);
+      return;
+    }
+    for(int i = 0; i < size[curr->level]; i++)
+    {
+      static_cast<Address*>(curr->next)[i].level = curr->level + 1;
+      FreeAddress(static_cast<Address*>(curr->next) + i);
+    }
+    delete[] static_cast<Address*>(curr);
+  }
+  ~MyArray()
+  {
+    delete[] size;
+    FreeAddress(top);
+  }
+};
+class Int{
+
 };
