@@ -1,4 +1,5 @@
 #include <iostream>
+#include <time.h>
 class MyArray;
 class Int;
 class MyArray{
@@ -19,12 +20,10 @@ public:
       this->size[i] = size[i];
     top = new Address;
     top -> level = 0;
-    std::cout<<"dur";
     InitializeAddress(top);
   }
   void InitializeAddress(Address* curr)
   {
-    std::cout << "h";
     if (!curr) return;
     if(curr->level == dim - 1)
     {
@@ -67,6 +66,7 @@ class Int{
 public:
   Int(int level, int index, MyArray* arr): level(level), arr(arr)
   {
+    data = arr->top;
     if(level == arr->dim)
     {
       data = (static_cast<int*>(static_cast<MyArray::Address*>(data)->next)) + index;
@@ -101,7 +101,24 @@ Int MyArray::operator[](const int& n)
   }
 int main()
 {
-  int size[3] = {3, 3, 3};
+   clock_t start = clock();
+  int size[3] = {2, 3, 4};
   MyArray arr(3, size);
-  arr[1][1][1] = 0;
+ for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 4; k++) {
+        arr[i][j][k] = (i + 1) * (j + 1) * (k + 1);
+      }
+    }
+  }
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 4; k++) {
+        std::cout << i << " " << j << " " << k << " " << arr[i][j][k]
+                  << std::endl;
+      }
+    }
+  }
+  clock_t end = clock();
+  printf("Time: %lf\n", (double)(end - start)/CLOCKS_PER_SEC);
 }

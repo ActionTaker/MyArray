@@ -99,17 +99,11 @@ Array의 [] 연산자만 가지고는 제한이 많다 왜냐하면 다중배열
 Int operator[](const int& n)
   {
     Int num(0, top); //스택에 저장된Int
-    return Int[n];   //스택에 저장된 Int를 그대로 받고 임시객체를 생성하고 삭제함 그이후에는 하나의 같은 임시객체로 처리된다.
+    return Int(n);   //스택에 저장된 Int를 그대로 받고 임시객체를 생성하고 삭제함 그이후에는 하나의 같은 임시객체로 처리된다.
   }
-class Int {
-  void* data;
-  int level;
-  Array* arr;
-public:
-  Int(int level, Array* arr): level(level), arr(arr);
-  {
-    data = arr->top;
-  }
+```
+무조건 Int 객체를 생성해야하니 반환형 Int으로한다. 그리고 임시객체의 []연산자가 아래에 수행된다.
+```
   Int& operator[](const int& n) //const int& n을통해 불필요한 연산막기
   {
     if(level = MyArray->dim - 1)
@@ -119,8 +113,17 @@ public:
     level++;
     return *this;
   }
-};
 ```
+여기서는 임시객체를 받고 또다른임시객체를 생성할필요없이 계속 같은 임시객체를 반환한다.
+간편하게 Int의 생성자에 data를 받을수잇는 매개변수를 설정하고
+```
+Int operator[](const int& n) //const int& n을통해 불필요한 연산막기
+  {
+    return Int(data, level + 1, ary);
+  }
+```
+와같이 바꿀수있지만 그 과정에서 임시객체가 계속 생성되기에 성능저하가 발생한다. 같은 main 함수기준 전자는 0.000145, 후자는 0.000178초 기록햇다.
+
 ## 자료를 읽고 쓰게해주는 int operator=(const int& n), operator int()
 >
 ```
@@ -138,5 +141,3 @@ return *static_cast<int *>(data);
 []의 두번의 연산으로 &Int를 받고 = 연산자를 통해 직접 값을 Array에 대입한다.
 operator int()의 경우는 cout << arr[3][2]와 같은 연산을 처리할때 작동한다.
 
-
-[]연산자 두개, 손보기
