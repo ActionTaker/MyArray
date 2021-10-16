@@ -1,5 +1,27 @@
 #include <iostream>
+class MyArray;
+class Int{
+  void* data;
+  int level;
+  MyArray* arr;
+public:
+  Int(int level, MyArray* arr): level(level), arr(arr)
+  {
+    data = static_castarr->top;
+  }
+  Int& operator[](const int& n)
+  {
+    if(level = arr->dim - 1)
+      data = static_cast<int*>(data->next) + n;
+    else
+      data = static_cast<Address*>(data->next) + n;
+    level++;
+    return *this;
+  }
+};
 class MyArray{
+  friend Int;
+
   const int dim;
   int *size;
   struct Address{
@@ -49,7 +71,39 @@ public:
     delete[] size;
     FreeAddress(top);
   }
+  Int operator[](const int& n)
+  {
+    Int num(0, top);
+    return Int(n);
+  }
+  int operator=(const int& n)
+  {
+    *static_cast<int*>(data) = n;
+    return n;
+  }
+  operator int(){ //읽을때만 사용가능.
+  return *static_cast<int *>(data);
+  }
+  
 };
-class Int{
 
-};
+int main() {
+  int size[] = {2, 3, 4};
+  MyArray arr(3, size);
+
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 4; k++) {
+        arr[i][j][k] = (i + 1) * (j + 1) * (k + 1);
+      }
+    }
+  }
+  for (int i = 0; i < 2; i++) {
+    for (int j = 0; j < 3; j++) {
+      for (int k = 0; k < 4; k++) {
+        std::cout << i << " " << j << " " << k << " " << arr[i][j][k]
+                  << std::endl;
+      }
+    }
+  }
+}

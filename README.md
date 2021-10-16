@@ -93,5 +93,50 @@ class Int {
 ```
 Array의 [] 연산자만 가지고는 제한이 많다 왜냐하면 다중배열의 경우 반환값을 그때마다 다르게 해야하기때문이다. Int 클래스를통해서 현재 어떤배열의 몇번째 배열인지 저장을 하고 최종적으로 int 값을 리턴할수있게 도와준다. 즉, 여러번의 []연산끝에는 data에 int 배열을 가르키는 주소가 남아있게되고 operator int(), Int& operator=(const int& a) 를통해 언제든지 int 형으로 읽히고 쓸준비가 된다.
 
+## Array의 []연산자, Int의 []연산자
+>
+```
+Int operator[](const int& n)
+  {
+    Int num(0, top); //스택에 저장된Int
+    return Int[n];   //스택에 저장된 Int를 그대로 받고 임시객체를 생성하고 삭제함 그이후에는 하나의 같은 임시객체로 처리된다.
+  }
+class Int {
+  void* data;
+  int level;
+  Array* arr;
+public:
+  Int(int level, Array* arr): level(level), arr(arr);
+  {
+    data = arr->top;
+  }
+  Int& operator[](const int& n) //const int& n을통해 불필요한 연산막기
+  {
+    if(level = MyArray->dim - 1)
+      data = static_cast<int*>(data->next) + n;
+    else
+      data = static_cast<Address*>(data->next) + n;
+    level++;
+    return *this;
+  }
+};
+```
+## 자료를 읽고 쓰게해주는 int operator=(const int& n), operator int()
+>
+```
+int operator=(const int& n)
+{
+  *static_cast<int*>(data) = n;
+  return n;
+}
+operator int() //읽을때만 사용가능.
+{
+return *static_cast<int *>(data);
+}
+```
+여기서 = 연산자는 값을 쓸수있게 도와준다. 예를들면 arr[3][2] = 4 가있을떄
+[]의 두번의 연산으로 &Int를 받고 = 연산자를 통해 직접 값을 Array에 대입한다.
+operator int()의 경우는 cout << arr[3][2]와 같은 연산을 처리할때 작동한다.
 
 
+[]연산자 두개, 손보기

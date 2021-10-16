@@ -1,2 +1,2 @@
 language = "cpp"
-run = "run = "clang++-7 -pthread -std=c++17 -o MyArray MyArray.cpp && ./MyArray""
+run = "clang++-7 -pthread -std=c++17 -o MyArray MyArray.cpp && ./MyArray"
