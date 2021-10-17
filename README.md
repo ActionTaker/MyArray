@@ -122,7 +122,7 @@ Int operator[](const int& n) //const int& n을통해 불필요한 연산막기
     return Int(data, level + 1, ary);
   }
 ```
-와같이 바꿀수있지만 그 과정에서 임시객체가 계속 생성되기에 성능저하가 발생한다. 같은 main 함수기준 전자는 0.000145, 후자는 0.000178초 기록햇다.
+와같이 바꿀수있지만 그 과정에서 임시객체가 계속 생성되기에 성능저하가 발생한다. 같은 main 함수기준 전자는 0.000145, 후자는 0.000178초 기록햇다. Int&를 사용하면 한 배열당 단하나의 Int가 필요하다.
 
 ## const int& a 를 인자로받는 함수에 대한 고찰
 >복사를 안하기 때문에 더 빠를것이라 생각했지만 레퍼런스로 받고 역참조를할때에도 추가적인 연산이 필요하다. const T&a 는 T대신에 사용할수있다 객체처럼 덩치가 큰것들은 const&로 해주는 것이 좋지만 int 와같은 기본자료형은 그냥 복사해주는것이 좋다.  Passing by "const & is generally more efficient because it accepts a bigger value than passing by "const value" but passing an "int" to a function is only 4 bytes no mater the size of the number.So passing by reference does not have any noticeable advantage. It probably costs more when de-referencing. 그리고 일반적인 템플렛을 만들떄는 const&를 써주는게좋다. 객체도 받고 일반형도 받을수있기때문이다!
